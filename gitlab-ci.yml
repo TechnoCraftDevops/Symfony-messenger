@@ -1,0 +1,98 @@
+variables:
+  TOOLBOX_IMAGE: "technocraftdevops/phptoolbox:8.1"
+  
+stages:
+  - commit-lint
+  - tests
+  - security-checker
+  - clean-code
+  #-----------------
+  - release
+  - deploy-dev
+  - deploy-uat
+  - deploy-prod
+  - deploy-preprod
+
+#----commit lint--------#
+commitlint:check:
+  stage: commit-lint
+  image: $TOOLBOX_IMAGE
+  script:
+    - git fetch origin master:master
+    - npx commitlint --from=origin/master --to=$CI_COMMIT_SHORT_SHA --verbose
+  except:
+    changes:
+      - "CHANGELOG.md"
+  tags:
+    - php
+
+#----test code--------#
+php-unit:
+  stage: tests
+  image: $TOOLBOX_IMAGE    
+  before_script:
+    - composer install --no-scripts
+    - echo -e 'APP_ENV="test" \nSYMFONY_DEPRECATIONS_HELPER="weak" \nDATABASE_URL=' > .env
+  script:
+    - git fetch origin master:master
+    - php bin/phpunit --coverage-text --colors=never --coverage-html $CI_PROJECT_DIR/coverage tests/
+  artifacts:
+    paths:
+      - coverage
+    expire_in: 2 week
+  tags:
+    - php
+
+#----Symfony security--------#
+Symfony-Security :
+  stage: security-checker
+  image: $TOOLBOX_IMAGE
+  script:
+    - symfony check:security
+  allow_failure: true
+  tags:
+    - php
+
+#----clean code--------#
+clean-code:phpcs:
+  stage: clean-code
+  image: $TOOLBOX_IMAGE
+  script:
+    - git fetch origin master:master
+    - phpcs --standard=PSR12 --ignore=src/kernel.php src/'
+    - phpcs --standard=PSR12 --ignore=tests/bootstrap.php tests/'
+  tags:
+    - php
+
+clean-code:phpstan:
+  stage: clean-code
+  image: $TOOLBOX_IMAGE
+  script:
+    - git fetch origin master:master
+    - phpstan analyze src/'
+  tags:
+    - php
+
+#----Release--------#
+# release:
+#   stage: release
+#   image: $TOOLBOX_IMAGE
+#   variables:
+#     GIT_STRATEGY: clone
+#   before_script:
+#     - echo "release comming soon ... !"
+#     - git config user.email "technocraft.releaseman@gmail.com"
+#     - git config user.name "Release Man"
+#     - git remote set-url origin "https://$USR:$PSD@$CI_SERVER_HOST/$CI_PROJECT_PATH.git"
+#   script:
+#     - git checkout master
+#     - release-it
+#     - git push
+#     - git push --tag
+#   only:
+#     - master
+#   except:
+#       changes:
+#         - "CHANGELOG.md"
+#   tags:
+#     - php

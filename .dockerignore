@@ -1,0 +1,17 @@
+
+/.env.local
+/.env.local.php
+/.env.*.local
+/.env
+/apache_php_log/*.log
+/.phpunit.xml.dist
+
+/.gitignore
+/.gitlab-ci.yml
+
+/Dockerfile
+
+/CHANGELOG.md
+
+/var/
+/vendor/
