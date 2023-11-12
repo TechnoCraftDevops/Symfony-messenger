@@ -1,0 +1,40 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Liste des Newsletters{% endblock %}
+
+{% block body %}
+    <h1>Liste des newsletters</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Titre</th>
+                <th>Date</th>
+                <th>Catégorie</th>
+                <th>Inscrits</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for newsletter in allNewsLetters %}
+                <tr>
+                    <td>{{newsletter.id}}</td>
+                    <td>{{newsletter.name}}</td>
+                    <td>{{newsletter.isIsSent ? 'ok' : 'KO !'}}</td>
+                    <td>{{newsletter.content}}</td>
+                    <td>{{newsletter.users|length}}</td>
+                    <td>
+                        {% if newsletter.isSent == false %}
+                            <form action="/newsLetter/send/{{newsletter.id}}" method="post">
+                                <button name="foo" value="upvote">Envoyer</button>
+                            </form>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        
+        </tbody>
+    </table>
+
+
+{% endblock %}

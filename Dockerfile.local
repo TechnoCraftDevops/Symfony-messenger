@@ -34,11 +34,6 @@ ENV COMPOSER_ALLOW_SUPERUSER=1
 RUN docker-php-ext-configure zip && \
     docker-php-ext-install -j$(nproc) intl opcache mysqli pdo pdo_mysql zip
 
-# php, xdebug & apache config
-COPY ./apache_config/micro-service.conf /etc/apache2/sites-enabled/000-default.conf
-COPY ./apache_php_config/php.ini /usr/local/etc/php/conf.d/app.ini
-COPY ./apache_php_config/xdebug.ini /usr/local/etc/php/conf.d/xdebug.ini
-
 # install amqp
 RUN apt-get update \
     && apt-get install -y \
@@ -49,6 +44,11 @@ RUN apt-get update \
         sockets \
     && pecl install amqp \
     && docker-php-ext-enable amqp
+
+# php, xdebug & apache config
+COPY ./apache_config/micro-service.conf /etc/apache2/sites-enabled/000-default.conf
+COPY ./apache_php_config/php.ini /usr/local/etc/php/conf.d/app.ini
+COPY ./apache_php_config/xdebug.ini /usr/local/etc/php/conf.d/xdebug.ini
 
 WORKDIR /var/www/html
 

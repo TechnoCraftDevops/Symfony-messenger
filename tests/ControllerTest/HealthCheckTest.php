@@ -1,10 +1,10 @@
 <?php
 
-namespace App\tests\HealthCheckTest;
+namespace App\tests\ControllerTest;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
-class VersionServiceTest extends WebTestCase
+class HealthCheckTest extends WebTestCase
 {
     protected $client;
 

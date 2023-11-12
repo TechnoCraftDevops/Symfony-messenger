@@ -27,6 +27,7 @@
         "dama/doctrine-test-bundle": "^7.2",
         "doctrine/doctrine-fixtures-bundle": "^3.4",
         "fakerphp/faker": "^1.23",
+        "liip/test-fixtures-bundle": "^2.6",
         "phpunit/phpunit": "^9.5",
         "symfony/browser-kit": "6.3.*",
         "symfony/css-selector": "6.3.*",
@@ -77,14 +78,16 @@
         "install-package": "docker exec -u app -ti micro-service-messenger composer require ",
         "install-dev-package": "docker exec -u app -ti micro-service-messenger composer require --dev ",
         "bin-console": "docker exec -u app -ti micro-service-messenger php bin/console ",
+        "bin-console-test": "docker exec -u app -ti micro-service-messenger php bin/console --env=test ",
         "run-test": "docker exec -u app -ti micro-service-messenger bash -c 'php bin/phpunit'",
         "run-test-coverage": "docker exec -u app -ti micro-service-messenger bash -c 'php bin/phpunit  --coverage-html coverage'",
         "run-phpcs-src": "docker exec -u app -ti micro-service-messenger bash -c 'phpcs --standard=PSR12 --ignore=src/kernel.php src/'",
         "run-phpcs-tests": "docker exec -u app -ti micro-service-messenger bash -c 'phpcs --standard=PSR12 --ignore=tests/bootstrap.php tests/'",
         "run-phpstan": "docker exec -u app -ti micro-service-messenger bash -c 'phpstan analyze src/'",
-        "consume-async-msg-verbose": "docker exec -u app -ti micro-service-messenger bash -c 'php bin/console messenger:consume async -vv'",
-        "consume-async-msg": "docker exec -u app -ti micro-service-messenger bash -c 'php bin/console messenger:consume async'",
-        "stop-async-msg": "docker exec -u app -ti micro-service-messenger bash -c 'php bin/console messenger:stop-workers'"
+        "messenger-consume-async-verbose": "docker exec -u app -ti micro-service-messenger bash -c 'php bin/console messenger:consume async -vv'",
+        "messenger-consume-async": "docker exec -u app -ti micro-service-messenger bash -c 'php bin/console messenger:consume async'",
+        "messenger-stop-workers": "docker exec -u app -ti micro-service-messenger bash -c 'php bin/console messenger:stop-workers'",
+        "messenger:stat" : "docker exec -u app -ti micro-service-messenger bash -c 'php bin/console messenger:stat'"
         
     },
     "conflict": {
