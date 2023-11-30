@@ -46,6 +46,9 @@ class NewsLetterTest extends WebTestCase
 
         $this->assertResponseIsSuccessful();
         $this->assertResponseStatusCodeSame(200);
+
+        $transport = $this->getContainer()->get('messenger.transport.async');
+        $this->assertCount(0, $transport->getSent());
     }
 
     private function runWorker()
@@ -71,10 +74,4 @@ class NewsLetterTest extends WebTestCase
             dd($run);
         } while (!$run);
     }
-
-    // public function testMessenger(): void
-    // {
-    //     $transport = $this->getContainer()->get('messenger.transport.async');
-    //     $this->assertCount(1, $transport->getSent());
-    // }
 }

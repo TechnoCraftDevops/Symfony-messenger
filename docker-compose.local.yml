@@ -13,7 +13,7 @@ services:
       - 8000:80
     networks:
       messenger-network:
-        ipv4_address: 172.23.0.2
+        ipv4_address: 172.24.0.2
 
   mysql-db:
     container_name: micro-service-messenger-db
@@ -27,7 +27,7 @@ services:
       - mysql_db_data_container:/var/lib/mysql
     networks:
       messenger-network:
-        ipv4_address: 172.23.0.3
+        ipv4_address: 172.24.0.3
 
   adminer:
     container_name: micro-service-messenger-adminer
@@ -40,7 +40,7 @@ services:
       - mysql-db
     networks:
       messenger-network:
-        ipv4_address: 172.23.0.4
+        ipv4_address: 172.24.0.4
 
   mailhog:
     container_name: micro-service-messenger-mailhog
@@ -52,7 +52,7 @@ services:
       - 8025:8025 # web ui
     networks:
       messenger-network:
-        ipv4_address: 172.23.0.5
+        ipv4_address: 172.24.0.5
 
   rabbitmq:
     container_name: micro-service-messenger-rabbitmq
@@ -67,7 +67,7 @@ services:
       - micro-service-messenger
     networks:
       messenger-network:
-        ipv4_address: 172.23.0.6
+        ipv4_address: 172.24.0.6
 
 volumes:
   mysql_db_data_container:
@@ -77,5 +77,5 @@ networks:
     driver: bridge
     ipam:
       config:
-        - subnet: 172.23.0.0/16
-          gateway: 172.23.0.1
+        - subnet: 172.24.0.0/16
+          gateway: 172.24.0.1
